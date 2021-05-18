@@ -5,10 +5,12 @@ import WelcomeScreen from '../app/screens/WelcomeScreen';
 import LoginScreen from '../app/screens/LoginScreen';
 import SignUpScreen from '../app/screens/SignUpScreen';
 import HomeScreen from '../app/screens/HomeScreen';
+import ProfileScreen from '../app/screens/ProfileScreen';
+import ActivityScreen from '../app/screens/ActivityScreen';
 
 const screens = {
     Welcome: {
-        screen: WelcomeScreen,
+        screen: WelcomeScreen
     },
     Login: {
         screen: LoginScreen
@@ -17,7 +19,14 @@ const screens = {
         screen: SignUpScreen
     },
     Home: {
-        screen: HomeScreen
+        screen: HomeScreen,
+        navigationOptions: {headerShown: false},
+    },
+    Profile: {
+        screen: ProfileScreen,
+    },
+    Activity: {
+        screen: ActivityScreen,
     }
 }
 
