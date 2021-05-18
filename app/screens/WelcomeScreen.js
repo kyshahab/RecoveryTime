@@ -1,32 +1,32 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View, Text } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, Image, Button, TouchableHighlight } from 'react-native';
 
-function WelcomeScreen(props) {
+function WelcomeScreen({ navigation }) {
+
+    const loginPress = () => {
+        navigation.navigate('Login');
+    }
+    const signUpPress = () => {
+        navigation.navigate('Register');
+    }
     return (
         <ImageBackground style = {styles.background} source={require("../assets/background.jpg")}>
-            <View style={styles.header}>
-                <Text style = {styles.headerText}>
-                    Recovery Time
-                </Text>
-            </View>
+            <TouchableHighlight onPress = {loginPress}>
+                <View style={styles.loginButton}>
+                    <Text style = {styles.baseText}>
+                        Login
+                    </Text>
+                </View>
+            </TouchableHighlight>
 
-            <View style={styles.subheader}>
-                <Text style = {styles.subheaderText}>
-                    Recovery Starts Now
-                </Text>
-            </View>
-            
-            <View style={styles.loginButton}>
-                <Text style = {styles.baseText}>
-                    Login
-                </Text>
-            </View>
+            <TouchableHighlight onPress = {signUpPress}>
+                <View style={styles.signUpButton}>
+                    <Text style = {styles.baseText}>
+                        Sign Up
+                    </Text>
+                </View>
+            </TouchableHighlight>
 
-            <View style={styles.signUpButton}>
-                <Text style = {styles.baseText}>
-                    Sign Up
-                </Text>
-            </View>
         </ImageBackground>
     );
 }
@@ -35,34 +35,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
     },
-    headerText: {
-        fontSize: 40,
-        color: "#7fffd4",
-    },
-    header: {
-        width: "100%",
-        height: 70,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        left: 0,
-        top: 200,
-        position: "absolute",
-    },
-    subheaderText: {
-        fontSize: 20,
-        color: "#7fffd4",
-    },
-    subheader: {
-        width: "100%",
-        height: 70,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        left: 0,
-        top: 500,
-        position: "absolute",
-    },
-
-
     loginButton: {
         width: "100%",
         height: 70,
