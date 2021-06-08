@@ -1,29 +1,47 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, ScrollView, } from 'react-native';
-import { set } from "react-native-reanimated";
+//require('dotenv').config();
 
 function LoginScreen( {navigation} ) {
     const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
+    const [pass, setPassword] = useState("");
     const [incorretLogin, setIncorrectLogin] = useState(false);
     
     const signUpPress = () => {
         navigation.navigate('Register');
     }
-
+    const authenticate = async () => {  
+        const data = { 
+            username: user, 
+            password: pass
+        };
+        let json = null;
+        try {
+            let response = await fetch('temp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data).toString()
+            });
+            json = await response.json();
+        }
+        catch(err) {
+            console.log(err);
+            json = {};
+        }
+        return json.error;
+    }
     const loginPress = () => {
-        // check if user and password exist and are correct,
-        // login if true, keep what I have if false
-        if (user == "kameron" && password == "dog") {
-            console.log("HI")
-            navigation.navigate('Home');
-        }
-        else {
-            setIncorrectLogin(true);
-            setUser("");
-            setPassword("");
-        }
+        authenticate().then(error => {
+            if (error == null) {
+                navigation.navigate('Home');
+            }
+            else {
+                setIncorrectLogin(true);
+            }
+        });
     }
     return (
         <ScrollView contentContainerStyle = {{flexGrow: 1, justifyContent: 'center'}}>
@@ -48,7 +66,7 @@ function LoginScreen( {navigation} ) {
                     placeholder="Password"
                     placeholderTextColor="#003f5c"
                     secureTextEntry={true}
-                    onChangeText={(password) => setPassword(password)}
+                    onChangeText={(pass) => setPassword(pass)}
                 />
                 </View>
    

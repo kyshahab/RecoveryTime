@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacit
 
 function SignUpScreen( {navigation} ) {
     const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
+    const [pass, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userTaken, setUserTaken] = useState(false);
     const [passwordsDifferent, setPasswordsDifferent] = useState(false);
@@ -12,24 +12,47 @@ function SignUpScreen( {navigation} ) {
     const loginPress = () => {
         navigation.navigate('Login');
     }
+    
+    const addUser = async () => {  
+        const data = { 
+            username: user, 
+            password: pass
+        };
+        let json = null;
+        try {
+            let response = await fetch('temp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data).toString()
+            });
+            json = await response.json()
+        }
+        catch (err) {
+            console.log(err);
+            json = {};
+        }
+        return json.error;
+    }
 
     const signUpPress = () => {
-        // check database for username and make sure not empty
-        // check if passwords match
-        // send to database and login if signup valid
-        if (user == "kameron") {
-            setPasswordsDifferent(false);
-            setUserTaken(true);
-        }
-        else if (password != confirmPassword) {
-            setUserTaken(false);
-            setPasswordsDifferent(true);
-        }
-        else {
-            setUserTaken(false);
-            setPasswordsDifferent(false);
-            console.log("Signed up");
-        }
+        addUser().then(error => {
+            if (error != null) {
+                setPasswordsDifferent(false);
+                setUserTaken(true);
+            }
+            else if (pass != confirmPassword) {
+                setUserTaken(false);
+                setPasswordsDifferent(true);
+            }
+            else {
+                setUserTaken(false);
+                setPasswordsDifferent(false);
+                console.log(user + " signed up.");
+                navigation.navigate("Login")
+            }
+        });
     }
     
     return (
@@ -56,7 +79,7 @@ function SignUpScreen( {navigation} ) {
                         placeholder="Password"
                         placeholderTextColor="#003f5c"
                         secureTextEntry={true}
-                        onChangeText={(password) => setPassword(password)}
+                        onChangeText={(pass) => setPassword(pass)}
                     />
                 </View>
 
